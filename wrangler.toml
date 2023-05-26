@@ -2,6 +2,11 @@ name = "openai-proxy"
 main = "src/worker.js"
 compatibility_date = "2023-05-25"
 
+# The necessary secrets are:
+# - ACCESS_KEYS
+# - OPENAI_API_KEY
+# Run `wrangler secret put <NAME>` for each of these
+
 # # KV Namespace binding - For more information: https://developers.cloudflare.com/workers/runtime-apis/kv
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

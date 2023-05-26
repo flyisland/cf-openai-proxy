@@ -11,18 +11,39 @@
 const api_base = "https://api.openai.com"
 export default {
 	async fetch(request, env, ctx) {
-
 		if (request.method === 'OPTIONS') {
 			return handleOPTIONS(request)
 		}
+
+		const accessKeys = env.ACCESS_KEYS.split(",");
+		const Authorization = request.headers.get("Authorization");
+		if (!Authorization) {
+			return new Response("Invalid Authorization", { status: 401 });
+		}
+		const accessKey = Authorization.split(" ")[1];
+		if (!accessKey || !accessKeys.includes(accessKey)) {
+			return new Response("Invalid Access Key", { status: 401 });
+		}
+
+		if (!accessKeys.includes(accessKey)) {
+			return new Response("Invalid Access Key", { status: 401 });
+		}
+
+		const newHeaders = new Headers(request.headers)
+		newHeaders.set("Authorization", `Bearer ${env.OPENAI_API_KEY}`);
 
 		let pathname = new URL(request.url).pathname;
 		if (!pathname.startsWith("/v1")) {
 			// some sdk will put /v1 at the begin, some will not
 			pathname = "/v1" + pathname;
 		}
-		let response = await fetch(api_base + pathname, request);
+		const newRequest = new Request(api_base + pathname, {
+			method: request.method,
+			headers: newHeaders,
+			body: request.body
+		})
 
+		let response = await fetch(newRequest);
 		return response;
 	},
 };

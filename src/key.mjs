@@ -7,9 +7,9 @@ program
   .name("key")
   .description("CLI to generate a random access key")
   .version("0.0.1")
-  .requiredOption("-n, --user-name <string>", "the user name of who is going to use this key",)
-  .action((options) => {
-    let userName = options.userName.replace(" ", "_");
+  .argument("<user-name>", "the user name of who is going to use this key")
+  .action((userName) => {
+    userName = userName.replace(" ", "_");
     console.log(`${prefix}${userName}-${tenRandomChars()}`);
   });
 
