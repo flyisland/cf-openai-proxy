@@ -34,8 +34,8 @@ Now you can use the URL of this worker as the base URL of the OpenAI API, and th
 ```python
 import openai
 
-openai.api_key = "sk-Tom-2Hf3aTUVlG"
-openai.api_base = "openai-proxy.yourname-8235.workers.dev"
+openai.api_key = "sk-Tom-wMtF9kkGDu"
+openai.api_base = "https://openai-proxy.yourname-8235.workers.dev"
 
 # create a chat completion
 chat_completion = openai.ChatCompletion.create(
