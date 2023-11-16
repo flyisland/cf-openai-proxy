@@ -9,10 +9,15 @@
  */
 
 const api_base = "https://api.openai.com"
+
 export default {
 	async fetch(request, env, ctx) {
 		if (request.method === 'OPTIONS') {
 			return handleOPTIONS(request)
+		}
+
+		if (request.headers.get("CF-IPCountry") === "CN") {
+			return new Response("Forbidden country", { status: 503 });
 		}
 
 		const accessKeys = env.ACCESS_KEYS.split(",");
@@ -25,12 +30,9 @@ export default {
 			return new Response("Invalid Access Key", { status: 401 });
 		}
 
-		if (!accessKeys.includes(accessKey)) {
-			return new Response("Invalid Access Key", { status: 401 });
-		}
-
-		const newHeaders = new Headers(request.headers)
+		const newHeaders = new Headers()
 		newHeaders.set("Authorization", `Bearer ${env.OPENAI_API_KEY}`);
+		newHeaders.set("Content-Type", "application/json");
 
 		let pathname = new URL(request.url).pathname;
 		if (!pathname.startsWith("/v1")) {
@@ -43,7 +45,10 @@ export default {
 			body: request.body
 		})
 
-		let response = await fetch(newRequest);
+		const response = await fetch(newRequest);
+		// if (response.status !== 200) {
+		// 	console.log(await response.text());
+		// }
 		return response;
 	},
 };
