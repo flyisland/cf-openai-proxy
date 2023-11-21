@@ -8,17 +8,16 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-const api_base = "https://api.openai.com"
-
 export default {
 	async fetch(request, env, ctx) {
 		if (request.method === 'OPTIONS') {
 			return handleOPTIONS(request)
 		}
 
-		if (request.headers.get("CF-IPCountry") === "CN") {
-			return new Response("Forbidden country", { status: 503 });
-		}
+		// Block request from China
+		// if (request.headers.get("CF-IPCountry") === "CN") {
+		//   return new Response("Forbidden country", { status: 503 });
+		// }
 
 		const accessKeys = env.ACCESS_KEYS.split(",");
 		const Authorization = request.headers.get("Authorization");
@@ -35,11 +34,12 @@ export default {
 		newHeaders.set("Content-Type", "application/json");
 
 		let pathname = new URL(request.url).pathname;
-		if (!pathname.startsWith("/v1")) {
+		if (pathname.startsWith("/v1")) {
 			// some sdk will put /v1 at the begin, some will not
-			pathname = "/v1" + pathname;
+			// remove the /v1 if it exists, because it isn't needed for AI gateway
+			pathname = pathname.slice(3);
 		}
-		const newRequest = new Request(api_base + pathname, {
+		const newRequest = new Request(env.API_BASE + pathname, {
 			method: request.method,
 			headers: newHeaders,
 			body: request.body

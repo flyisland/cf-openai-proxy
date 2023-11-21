@@ -1,3 +1,6 @@
+# Configuration
+wrangler.toml
+
 # Logs
 logs
 *.log
