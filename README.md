@@ -9,6 +9,16 @@ By accessing the OpenAI API through the Cloudflare worker, clients from all coun
 
 ## Usage
 
+### Setup AI Gateway
+
+Create an AI Gateway on Cloudflare. See <https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/>.
+
+After creating the AI Gateway, copy the OpenAI API endpoint URL.
+It should be displayed in the AI Gateway dashboard once you have created the gateway.
+
+In this project directory, make a copy of file `wrangler.toml.sample` and rename it to `wrangler.toml`.
+Edit the file and replace the existing value of `API_BASE` with the copied OpenAI API endpoint URL.
+
 ### [Setting up the secrets to the Cloudflare worker](https://developers.cloudflare.com/workers/platform/environment-variables/#add-secrets-to-your-project)
 
 To set up secrets for the Cloudflare worker, follow these steps:

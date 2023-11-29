@@ -1,0 +1,13 @@
+name = "openai-proxy"
+main = "src/worker.js"
+compatibility_date = "2023-05-25"
+
+[vars]
+# Copy the OpenAI API Endpoint from the AI Gateway page
+API_BASE = "https://gateway.ai.cloudflare.com/v1/xxxxxxxxxxxxxxx/name/openai"
+
+# The necessary secrets are:
+# - ACCESS_KEYS
+# - OPENAI_API_KEY
+# Run `wrangler secret put <NAME>` for each of these
+

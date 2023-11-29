@@ -9,15 +9,13 @@ program
   .version("0.0.1")
   .argument("<user-name>", "the user name of who is going to use this key")
   .action((userName) => {
-    userName = userName.replace(" ", "_");
-    console.log(`${prefix}${userName}-${tenRandomChars()}`);
+    console.log(generateOpenAiApiKey(userName));
   });
 
 program.parse();
 
 
-function tenRandomChars() {
-  const length = 10;
+function randomChars(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
   let result = '';
@@ -28,3 +26,7 @@ function tenRandomChars() {
   return result;
 }
 
+function generateOpenAiApiKey(userName) {
+  const first20chars = userName.replace(" ", "").padEnd(20, "0");
+  return `sk-${first20chars}T3BlbkFJ${randomChars(20)}`;
+}
